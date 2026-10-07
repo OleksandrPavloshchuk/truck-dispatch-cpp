@@ -1,4 +1,4 @@
-set(PROJECT_NAME "hello-drogon")
+set(PROJECT_NAME "truck-dispatch")
 
 cmake_minimum_required(VERSION 4.00)
 
