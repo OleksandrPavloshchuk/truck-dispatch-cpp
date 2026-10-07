@@ -1,5 +1,5 @@
 /**
- * truck.hpp
+ * domain.hpp
  */
  
 #pragma once
@@ -10,7 +10,6 @@ struct Truck {
 	const std::string name;
 	const float capacity;
 	
-	Truck() {}
 	Truck(
 		const std::string &name, 
 		const float capacity
@@ -23,7 +22,6 @@ struct Shipment {
 	const std::string name;
 	const float weight;
 	
-	Shipment() {}
 	Shipment(
 		const std::string &name, 
 		const float weight
@@ -33,10 +31,9 @@ struct Shipment {
 };
 
 struct Assignment {
-	const Truck &truck;
-	const Shipment &shipment;
+	const Truck truck;
+	const Shipment shipment;
 	
-	Assignment() {}
 	Assignment(
 		const Truck &truck,
 		const Shipment &shipment
