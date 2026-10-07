@@ -1,45 +1,28 @@
 /**
- * main.cpp
+ * controller.hpp
  */
  
+#pragma once
+
 #include <string>
-#include <iostream>
 #include <variant>
 #include <drogon/drogon.h>
 
-#include "in-memory-repository.hpp"
-#include "service.hpp"
-
 using Callback = std::function<void(const drogon::HttpResponsePtr&)>;
 
-// Get required parameter from configuration:
-std::string getRequiredEnv(const char *name) {
-    const char *value = std::getenv(name);
-
-    if (value == nullptr || *value == '\0') {
-        throw std::runtime_error(
-            std::string("Required environment variable is not set: ") + name
-        );
-    }
-
-    return value;
-}
-
-// Entry point:
-int main() {
-
-	const int port = std::stoi(getRequiredEnv("HTTP_PORT"));
+class Controller {
+public:
+	void handle(const drogon::HttpRequestPtr& request, Callback &&callback);
+protected:
+	virtual bool validate(const Json::Value &json) = 0;
+	virtual void doHandle(const Json::Value &json, Callback &&callback) = 0;
+private:
+	void invalidJson(Callback &&callback);
+	void invalidInput(Callback &&callback);
 	
-	std::cout << "Configuration:" << std::endl;
-	std::cout << "\tHTTP port: " << port << std::endl;
-	
-	InMemoryRepository repository;
-	Service service(repository);
-	
+};
 
-	drogon::app()
-		.addListener("0.0.0.0", port)
-		.registerHandler("/td/shipment",
+/*
         	[](const drogon::HttpRequestPtr& request,
         		std::function<void(const drogon::HttpResponsePtr&)>&& callback) {
 
@@ -70,16 +53,6 @@ int main() {
         	    	response["name"] = name;
         	    	response["weight"] = weight;
 
-        	    	callback(drogon::HttpResponse::newHttpJsonResponse(response));
+        	    	callback(drogon::HttpResponse::newHttpJsonResponse(result));
         	})
-		.registerHandler("/hello", 
-			[](const drogon::HttpRequestPtr &request, Callback &&callback) {
-				auto response = drogon::HttpResponse::newHttpResponse();
-				response->setBody("TODO remove this!");
-				callback(response);
-			}
-		)
-		.run();
-
-	return 0;
-}
+*/
