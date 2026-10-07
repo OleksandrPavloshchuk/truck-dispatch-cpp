@@ -7,8 +7,8 @@
 * PostgreSQL
 
 ## Configuration
-### Types
+### Profiles
 * .env.dev - local development
-* .env.prod = production
-### Variables
+* .env.prod - production
+### Environment variables
 * HTTP_PORT - port of HTTP server

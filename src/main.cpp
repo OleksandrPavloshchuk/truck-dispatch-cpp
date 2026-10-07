@@ -6,6 +6,8 @@
 #include <iostream>
 #include <drogon/drogon.h>
 
+#include "domain.hpp"
+
 using Callback = std::function<void(const drogon::HttpResponsePtr&)>;
 
 // Get required parameter from configuration:
