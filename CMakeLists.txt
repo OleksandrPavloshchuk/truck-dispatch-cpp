@@ -9,6 +9,8 @@ project(${PROJECT_NAME}
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/service.cpp
+    src/in-memory-repository.cpp
 )
 
 find_package(Drogon REQUIRED)

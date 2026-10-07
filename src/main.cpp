@@ -6,6 +6,7 @@
 #include <iostream>
 #include <drogon/drogon.h>
 
+#include "in-memory-repository.hpp"
 #include "service.hpp"
 
 using Callback = std::function<void(const drogon::HttpResponsePtr&)>;

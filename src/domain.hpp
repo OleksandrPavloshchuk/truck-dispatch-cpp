@@ -8,11 +8,11 @@
 
 struct Truck {
 	const std::string name;
-	const float capacity;
+	const double capacity;
 	
 	Truck(
 		const std::string &name, 
-		const float capacity
+		const double capacity
 	): 
 		name(name), 
 		capacity(capacity) {}
@@ -20,11 +20,11 @@ struct Truck {
 
 struct Shipment {
 	const std::string name;
-	const float weight;
+	const double weight;
 	
 	Shipment(
 		const std::string &name, 
-		const float weight
+		const double weight
 	): 
 		name(name), 
 		weight(weight) {}
