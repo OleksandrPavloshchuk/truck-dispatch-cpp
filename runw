@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
-./build/hello-drogon
+set -x
+
+source "script/env.sh" dev
+
+./build/truck-dispatch
 
