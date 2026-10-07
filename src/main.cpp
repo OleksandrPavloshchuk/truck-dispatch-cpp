@@ -32,6 +32,9 @@ int main() {
 	std::cout << "Configuration:" << std::endl;
 	std::cout << "\tHTTP port: " << port << std::endl;
 	
+	InMemoryRepository repository;
+	Service service(repository);
+	
 
 	drogon::app()
 		.addListener("0.0.0.0", port)
