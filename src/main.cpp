@@ -10,6 +10,7 @@
 #include "in-memory-repository.hpp"
 #include "service.hpp"
 #include "add-shipment-controller.hpp"
+#include "add-truck-controller.hpp"
 
 using Callback = std::function<void(const drogon::HttpResponsePtr&)>;
 
@@ -37,12 +38,18 @@ int main() {
 	InMemoryRepository repository;
 	Service service(repository);
 	AddShipmentController addShipmentController(service);
+	AddTruckController addTruckController(service);
 	
 	drogon::app()
 		.addListener("0.0.0.0", port)
 		.registerHandler("/td/shipment", 
 			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {
 				addShipmentController.handle(req, std::move(callback));		
+			}
+		)
+		.registerHandler("/td/truck", 
+			[&addTruckController](const drogon::HttpRequestPtr& req, Callback &&callback) {
+				addTruckController.handle(req, std::move(callback));
 			}
 		)
 		.run();

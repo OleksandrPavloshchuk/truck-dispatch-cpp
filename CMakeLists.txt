@@ -12,6 +12,7 @@ add_executable(${PROJECT_NAME}
     src/service.cpp
     src/controller.cpp
     src/add-shipment-controller.cpp
+    src/add-truck-controller.cpp
     src/in-memory-repository.cpp
 )
 
