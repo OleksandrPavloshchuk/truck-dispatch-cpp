@@ -13,12 +13,15 @@ protected:
 	bool validate(const Json::Value &json);
 	void doHandle(const Json::Value &json, Callback &callback);
 private:
-	static Json::Value toJson(const ShipmentWaitsOutputEvent &event);
+	using Controller::toJson;
+	
+	Json::Value toJson(const ShipmentWaitsOutputEvent &event);
 	
 	struct EventHandler {
 		void operator()(const ShipmentWaitsOutputEvent &event) const;
 		void operator()(const AssignmentCreatedOutputEvent &event) const;
 		
 		Callback &callback;
+		AddShipmentController &controller;
 	};
 };

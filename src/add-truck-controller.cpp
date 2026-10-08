@@ -14,7 +14,7 @@ bool AddTruckController::validate(const Json::Value &json) {
 void AddTruckController::doHandle(const Json::Value &src, Callback &callback) {
 	const Truck truck(src["name"].asString(), src["capacity"].asDouble());
 	std::visit(
-		EventHandler{callback},
+		EventHandler{callback, *this},
 		service.onTruckArrived(truck)
 	);
 }
@@ -27,9 +27,9 @@ Json::Value AddTruckController::toJson(const TruckWaitsOutputEvent &event) {
 }
 
 void AddTruckController::EventHandler::operator()(const TruckWaitsOutputEvent &event) const {
-	callback(drogon::HttpResponse::newHttpJsonResponse(AddTruckController::toJson(event)));
+	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
 }
 
 void AddTruckController::EventHandler::operator()(const AssignmentCreatedOutputEvent &event) const {
-	callback(drogon::HttpResponse::newHttpJsonResponse(Controller::toJson(event)));
+	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
 }

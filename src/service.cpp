@@ -1,7 +1,7 @@
 /**
  * service.cpp
  */
- 
+
 #include "service.hpp"
 
 std::variant<ShipmentWaitsOutputEvent, AssignmentCreatedOutputEvent> 

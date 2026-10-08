@@ -6,8 +6,7 @@ source "$(dirname "$0")/env.sh" dev
 
 JSON=$(printf '{"name":"%s","capacity":%f}' "$1" "$2")
 
-curl 
-  -v \
+curl -v \
   -X POST \
   -H "Content-Type: application/json" \
   -d "$JSON" \

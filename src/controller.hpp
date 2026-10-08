@@ -20,10 +20,10 @@ protected:
 	virtual bool validate(const Json::Value &json) = 0;
 	virtual void doHandle(const Json::Value &src, Callback &callback) = 0;
 	
-	static Json::Value toJson(const Assignment &assignment);
-	static Json::Value toJson(const Truck &truck);
-	static Json::Value toJson(const Shipment &shipment);
-	static Json::Value toJson(const AssignmentCreatedOutputEvent &event);
+	Json::Value toJson(const Assignment &assignment);
+	Json::Value toJson(const Truck &truck);
+	Json::Value toJson(const Shipment &shipment);
+	Json::Value toJson(const AssignmentCreatedOutputEvent &event);
 	
 	Service &service;
 	
