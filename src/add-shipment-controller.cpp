@@ -11,20 +11,25 @@ bool AddShipmentController::validate(const Json::Value &json) {
 		&& json["weight"].isNumeric();
 }
 
-
 void AddShipmentController::doHandle(const Json::Value &src, Callback &callback) {
-	// TODO
+	const Shipment shipment(src["name"].asString(), src["weight"].asDouble());
+	std::visit(
+		EventHandler{callback},
+		service.onShipmentArrived(shipment)
+	);
+}
 
+Json::Value AddShipmentController::toJson(const ShipmentWaitsOutputEvent &event) {
+	Json::Value result;
+        result["type"] = "shipmentWaits";
+        result["shipment"] = toJson(event.shipment);
+        return result;		
+}
 
-	            	const auto name = src["name"].asString();
-        	    	const auto weight = src["weight"].asDouble();
-        	    	
-        	    	
+void AddShipmentController::EventHandler::operator()(const ShipmentWaitsOutputEvent &event) const {
+	callback(drogon::HttpResponse::newHttpJsonResponse(AddShipmentController::toJson(event)));
+}
 
-        	    	Json::Value response;
-        	    	response["name"] = name;
-        	    	response["weight"] = weight;
-
-        	    	callback(drogon::HttpResponse::newHttpJsonResponse(response));
-
+void AddShipmentController::EventHandler::operator()(const AssignmentCreatedOutputEvent &event) const {
+	callback(drogon::HttpResponse::newHttpJsonResponse(Controller::toJson(event)));
 }

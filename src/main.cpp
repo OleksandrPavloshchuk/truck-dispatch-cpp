@@ -36,8 +36,7 @@ int main() {
 	
 	InMemoryRepository repository;
 	Service service(repository);
-	
-	AddShipmentController addShipmentController;
+	AddShipmentController addShipmentController(service);
 	
 	drogon::app()
 		.addListener("0.0.0.0", port)

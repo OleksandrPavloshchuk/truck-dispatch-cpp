@@ -25,7 +25,35 @@ void Controller::invalidJson(Callback &callback) {
 }
 
 void Controller::invalidInput(Callback &callback) {
-	auto response = drogon::HttpResponse::newHttpJsonResponse(Json::Value{{"error", "Invalid shipment"}});
+	auto response = drogon::HttpResponse::newHttpJsonResponse(Json::Value{{"error", "Invalid value"}});
         response->setStatusCode(drogon::k400BadRequest);
         callback(response);
+}
+
+Json::Value Controller::toJson(const Assignment &assignment) {
+	Json::Value result;
+	result["truck"] = toJson(assignment.truck);
+	result["shipment"] = toJson(assignment.shipment);
+	return result;
+}
+
+Json::Value Controller::toJson(const Truck &truck) {
+	Json::Value result;
+        result["name"] = truck.name;
+        result["capacity"] = truck.capacity;
+        return result;
+}
+
+Json::Value Controller::toJson(const Shipment &shipment) {
+	Json::Value result;
+        result["name"] = shipment.name;
+        result["weight"] = shipment.weight;
+        return result;	
+}
+
+Json::Value Controller::toJson(const AssignmentCreatedOutputEvent &event) {
+	Json::Value result;
+        result["type"] = "assignmentCreated";
+        result["assignment"] = toJson(event.assignment);
+        return result;		
 }
