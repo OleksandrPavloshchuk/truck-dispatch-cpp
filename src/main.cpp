@@ -39,54 +39,11 @@ int main() {
 	
 	AddShipmentController addShipmentController;
 	
-
 	drogon::app()
 		.addListener("0.0.0.0", port)
 		.registerHandler("/td/shipment", 
 			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {
 				addShipmentController.handle(req, std::move(callback));		
-			}
-		)
-		/*
-		.registerHandler("/td/shipment",
-        	[](const drogon::HttpRequestPtr& request,
-        		std::function<void(const drogon::HttpResponsePtr&)>&& callback) {
-
-            		auto json = request->getJsonObject();
-
-            		if (!json) {
-                		auto response = drogon::HttpResponse::newHttpJsonResponse(Json::Value{{"error", "Invalid JSON"}});
-	        	        response->setStatusCode(drogon::k400BadRequest);
-        		        callback(response);
-        		        return;
-            		}
-
-            		const auto& body = *json;
-
-            		if (!body.isMember("name") || !body["name"].isString() || !body.isMember("weight") || !body["weight"].isNumeric()) {
-                		auto response = drogon::HttpResponse::newHttpJsonResponse(Json::Value{{"error", "Invalid shipment"}});
-                		response->setStatusCode(drogon::k400BadRequest);
-                		callback(response);
-                		return;
-            		}
-
-	            	const auto name = body["name"].asString();
-        	    	const auto weight = body["weight"].asDouble();
-        	    	
-        	    	
-
-        	    	Json::Value response;
-        	    	response["name"] = name;
-        	    	response["weight"] = weight;
-
-        	    	callback(drogon::HttpResponse::newHttpJsonResponse(response));
-        	})
-        	*/
-		.registerHandler("/hello", 
-			[](const drogon::HttpRequestPtr &request, Callback &&callback) {
-				auto response = drogon::HttpResponse::newHttpResponse();
-				response->setBody("TODO remove this!");
-				callback(response);
 			}
 		)
 		.run();
