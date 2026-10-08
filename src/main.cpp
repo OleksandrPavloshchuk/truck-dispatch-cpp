@@ -12,8 +12,6 @@
 #include "add-shipment-controller.hpp"
 #include "add-truck-controller.hpp"
 
-using Callback = std::function<void(const drogon::HttpResponsePtr&)>;
-
 // Get required parameter from configuration:
 std::string getRequiredEnv(const char *name) {
     const char *value = std::getenv(name);

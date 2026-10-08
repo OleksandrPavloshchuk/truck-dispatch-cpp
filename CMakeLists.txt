@@ -1,5 +1,7 @@
 set(PROJECT_NAME "truck-dispatch")
 
+set(CMAKE_BUILD_TYPE Release)
+
 cmake_minimum_required(VERSION 4.00)
 
 project(${PROJECT_NAME}
