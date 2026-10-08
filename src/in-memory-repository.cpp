@@ -25,9 +25,17 @@ bool InMemoryRepository::addShipment(const Shipment &shipment) {
 	return addIfAbsents(shipments, shipment);
 }
 
+void InMemoryRepository::addAssignment(const Assignment &assignment) {
+	assignments.push_back(assignment);
+}
+
 std::optional<Truck> InMemoryRepository::getLightestTruckForWeight(const double weight) {
 	std::optional<Truck> result;
+	
 	for (const auto &truck : trucks) {
+		if (isBusy(truck)) {
+			continue;
+		}
 		if (truck.capacity < weight) {
 			continue;
 		}
@@ -41,6 +49,9 @@ std::optional<Truck> InMemoryRepository::getLightestTruckForWeight(const double 
 std::optional<Shipment> InMemoryRepository::getHeaviestShipmentForCapacity(const double capacity) {
 	std::optional<Shipment> result;
 	for (const auto &shipment : shipments) {
+		if (isBusy(shipment)) {
+			continue;
+		}
 		if (shipment.weight > capacity) {
 			continue;
 		}
@@ -49,5 +60,23 @@ std::optional<Shipment> InMemoryRepository::getHeaviestShipmentForCapacity(const
 		}
 	} 
 	return result;
+}
+
+bool InMemoryRepository::isBusy(const Truck &truck) {
+	for (const auto &assignment : assignments) {
+		if (assignment.truck.name == truck.name) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool InMemoryRepository::isBusy(const Shipment &shipment) {
+	for (const auto &assignment : assignments) {
+		if (assignment.shipment.name == shipment.name) {
+			return true;
+		}
+	}
+	return false;
 }
 
