@@ -7,7 +7,7 @@
 #include <variant>
 #include <drogon/drogon.h>
 
-#include "in-memory-repository.hpp"
+#include "repository/in-memory.hpp"
 #include "service.hpp"
 #include "controller/add-shipment.hpp"
 #include "controller/add-truck.hpp"

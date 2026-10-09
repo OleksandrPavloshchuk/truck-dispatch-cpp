@@ -3,7 +3,7 @@
  */
 
 #include <algorithm>
-#include "in-memory-repository.hpp"
+#include "in-memory.hpp"
 
 template <typename T> bool sameName(const T &a, const T &b) {
 	return b.name == a.name;

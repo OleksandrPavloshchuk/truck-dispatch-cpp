@@ -8,7 +8,7 @@
 
 #include "input-events.hpp"
 #include "output-events.hpp"
-#include "repository.hpp"
+#include "repository/repository.hpp"
 
 class Service {
 public:

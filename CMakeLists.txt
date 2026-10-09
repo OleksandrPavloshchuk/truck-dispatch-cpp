@@ -15,7 +15,7 @@ add_executable(${PROJECT_NAME}
     src/controller/controller.cpp
     src/controller/add-shipment.cpp
     src/controller/add-truck.cpp
-    src/in-memory-repository.cpp
+    src/repository/in-memory.cpp
 )
 
 find_package(Drogon REQUIRED)
