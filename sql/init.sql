@@ -1,8 +1,11 @@
-use truckdispatch;
-
 drop table if exists assignments;
 drop table if exists shipments;
 drop table if exists trucks;
+drop user if exists td_app;
+
+create user :"app_user" with password :'app_password';
+
+grant usage on schema public to td_app;
 
 create table trucks
 (
@@ -26,3 +29,12 @@ create table assignments
     constraint fk_truck foreign key (truck_name) references trucks (name),
     constraint fk_shipment foreign key (shipment_name) references shipments (name)
 );
+
+grant select, insert, update, delete
+on all tables in schema public
+to td_app;
+
+alter default privileges in schema public
+grant usage, select ON sequences to td_app;
+
+
