@@ -3,16 +3,11 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+#set -x
 
-ENV_FILE="$PROJECT_DIR/.env.dev"
-COMPOSE_FILE="$PROJECT_DIR/docker/docker-compose.yaml"
-
-if [[ ! -f "$ENV_FILE" ]]; then
-    echo "Environment file not found: $ENV_FILE" >&2
-    exit 1
-fi
+ENV_FILE=$(dirname "$0")/env.sh
+source "$ENV_FILE" dev
+COMPOSE_FILE=$(dirname "$0")/../docker/docker-compose.yaml
 
 docker compose \
     --env-file "$ENV_FILE" \

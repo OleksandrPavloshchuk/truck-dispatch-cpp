@@ -1,11 +1,11 @@
 drop table if exists assignments;
 drop table if exists shipments;
 drop table if exists trucks;
-drop user if exists td_app;
+drop user if exists :"app_user";
 
 create user :"app_user" with password :'app_password';
 
-grant usage on schema public to td_app;
+grant usage on schema public to :"app_user";
 
 create table trucks
 (
@@ -32,9 +32,9 @@ create table assignments
 
 grant select, insert, update, delete
 on all tables in schema public
-to td_app;
+to :"app_user";
 
 alter default privileges in schema public
-grant usage, select ON sequences to td_app;
+grant usage, select ON sequences to :"app_user";
 
 
