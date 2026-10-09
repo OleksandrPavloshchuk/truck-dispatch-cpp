@@ -2,7 +2,7 @@
  * add-truck-controller.cpp
  */
  
-#include "add-truck-controller.hpp"
+#include "add-truck.hpp"
 
 bool AddTruckController::validate(const Json::Value &json) {
 	return json.isMember("name") 

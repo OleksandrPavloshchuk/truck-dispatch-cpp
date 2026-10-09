@@ -8,7 +8,7 @@
 #include <variant>
 #include <drogon/drogon.h>
 
-#include "service.hpp"
+#include "../service.hpp"
 
 using Callback = std::function<void(const drogon::HttpResponsePtr&)>;
 

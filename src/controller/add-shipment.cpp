@@ -1,8 +1,8 @@
 /**
- * add-shipment-controller.cpp
+ * add-shipment.cpp
  */
  
-#include "add-shipment-controller.hpp"
+#include "add-shipment.hpp"
 
 bool AddShipmentController::validate(const Json::Value &json) {
 	return json.isMember("name") 

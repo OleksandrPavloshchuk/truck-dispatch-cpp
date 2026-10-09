@@ -9,8 +9,8 @@
 
 #include "in-memory-repository.hpp"
 #include "service.hpp"
-#include "add-shipment-controller.hpp"
-#include "add-truck-controller.hpp"
+#include "controller/add-shipment.hpp"
+#include "controller/add-truck.hpp"
 
 // Get required parameter from configuration:
 std::string getRequiredEnv(const char *name) {
