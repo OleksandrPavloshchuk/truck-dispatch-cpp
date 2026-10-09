@@ -16,9 +16,11 @@ private:
 	using Controller::toJson;
 	
 	Json::Value toJson(const TruckWaitsOutputEvent &event);
+	Json::Value toJson(const TruckDuplicateOutputEvent &event);
 	
 	struct EventHandler {
 		void operator()(const TruckWaitsOutputEvent &event) const;
+		void operator()(const TruckDuplicateOutputEvent &event) const;
 		void operator()(const AssignmentCreatedOutputEvent &event) const;
 		
 		Callback &callback;

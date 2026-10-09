@@ -20,6 +20,20 @@ struct ShipmentWaitsOutputEvent {
 		shipment(shipment) {}
 };
 
+struct TruckDuplicateOutputEvent {
+	const Truck truck;
+		
+	TruckDuplicateOutputEvent(const Truck &truck) : 
+		truck(truck) {}
+};
+
+struct ShipmentDuplicateOutputEvent {
+	const Shipment shipment;
+		
+	ShipmentDuplicateOutputEvent(const Shipment &shipment) : 
+		shipment(shipment) {}
+};
+
 struct AssignmentCreatedOutputEvent {
 	const Assignment assignment;
 	

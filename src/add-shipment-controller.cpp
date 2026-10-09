@@ -26,7 +26,18 @@ Json::Value AddShipmentController::toJson(const ShipmentWaitsOutputEvent &event)
         return result;		
 }
 
+Json::Value AddShipmentController::toJson(const ShipmentDuplicateOutputEvent &event) {
+	Json::Value result;	
+        result["type"] = "shipmentDuplicate";
+        result["shipment"] = toJson(event.shipment);
+        return result;		
+}
+
 void AddShipmentController::EventHandler::operator()(const ShipmentWaitsOutputEvent &event) const {
+	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
+}
+
+void AddShipmentController::EventHandler::operator()(const ShipmentDuplicateOutputEvent &event) const {
 	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
 }
 

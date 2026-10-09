@@ -26,7 +26,18 @@ Json::Value AddTruckController::toJson(const TruckWaitsOutputEvent &event) {
         return result;		
 }
 
+Json::Value AddTruckController::toJson(const TruckDuplicateOutputEvent &event) {
+	Json::Value result;
+        result["type"] = "truckDuplicate";
+        result["truck"] = toJson(event.truck);
+        return result;		
+}
+
 void AddTruckController::EventHandler::operator()(const TruckWaitsOutputEvent &event) const {
+	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
+}
+
+void AddTruckController::EventHandler::operator()(const TruckDuplicateOutputEvent &event) const {
 	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
 }
 
