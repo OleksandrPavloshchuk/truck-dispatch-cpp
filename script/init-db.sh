@@ -18,6 +18,7 @@ psql \
   -p "$DB_PORT" \
   -U "$DB_ADMIN" \
   -d "$DB_DATABASE" \
+  -v ON_ERROR_STOP=1 \
   -v app_user="$DB_USER" \
   -v app_password="$DB_PASSWORD" \
   -f "$(dirname "$0")/../sql/init.sql"
