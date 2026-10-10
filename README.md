@@ -78,3 +78,9 @@ docker compose --env-file .env.dev -f docker/compose.yaml down -v
 
 `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB` are used by the PostgreSQL image when initializing an empty data directory. Changing these values does not automatically modify roles, passwords, or databases in an existing PostgreSQL volume.
 
+## Invoke PostgreSQL
+
+```shell
+sudo apt install libpq-dev
+```
+

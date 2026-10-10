@@ -5,6 +5,7 @@
 #include <string>
 #include <variant>
 #include <drogon/drogon.h>
+#include <drogon/orm/DbClient.h>
 
 #include "repository/in-memory.hpp"
 #include "service.hpp"
@@ -24,6 +25,38 @@ std::string getRequiredEnv(const char *name) {
 
 // Entry point:
 int main() {
+
+	auto connectStr = "host=" + getRequiredEnv("DB_HOST")
+		+ " port=" + getRequiredEnv("DB_PORT")
+		+ " dbname=" + getRequiredEnv("DB_DATABASE")
+		+ " user=" + getRequiredEnv("DB_USER")
+		+ " password=" + getRequiredEnv("DB_PASSWORD");
+		
+	auto dbClient = drogon::orm::DbClient::newPgClient(connectStr, 2);
+		
+	db->execSqlAsync(
+        	"SELECT current_database(), current_user",
+       	 	[](const drogon::orm::Result& result) {
+            	for (const auto& row : result) {
+                	LOG_INFO << "Database: "
+                         	<< row[0].as<std::string>()
+                         	<< ", user: "
+                         	<< row[1].as<std::string>();
+    	        	}
+    	    	},
+    	    	[](const std::exception_ptr& e) {
+    	        	try {
+    	        	    if (e) {
+    	        	        std::rethrow_exception(e);
+    	        	    }
+    	        	} catch (const std::exception& ex) {
+                		LOG_ERROR << "Database query failed: " << ex.what();
+    	        	}
+    	    	}
+    	);
+    
+	return 0;
+/*
 
 	const int port = std::stoi(getRequiredEnv("HTTP_PORT"));
 	
@@ -48,4 +81,5 @@ int main() {
 		.run();
 
 	return 0;
+	*/	
 }
