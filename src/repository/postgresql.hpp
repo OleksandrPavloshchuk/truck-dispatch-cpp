@@ -1,15 +1,17 @@
 /**
- * in-memory-repository.hpp
+ * repositorysql.hpp
  */
  
 #pragma once
 
 #include <vector>
 #include <string>
+#include <drogon/orm/DbClient.h>
 #include "repository.hpp"
 
-class InMemoryRepository : public Repository {
+class PostgresqlRepository : public Repository {
 public:
+	PostgresqlRepository(std::shared_ptr<drogon::orm::DbClient> dbClient): dbClient() {}
 	bool addTruck(const Truck &truck);
 	bool addShipment(const Shipment &shipment);
 	std::optional<Truck> getLightestTruckForWeight(const double weight);
@@ -17,12 +19,5 @@ public:
 	void addAssignment(const Assignment &assignment);
 	
 private:
-
-	bool isBusy(const Truck &truck);
-	bool isBusy(const Shipment &shipment);
-
-	std::vector<Truck> trucks;
-	std::vector<Shipment> shipments;
-	std::vector<Assignment> assignments;
-	
+	std::shared_ptr<drogon::orm::DbClient> dbClient;
 };

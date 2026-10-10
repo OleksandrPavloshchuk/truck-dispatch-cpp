@@ -1,9 +1,9 @@
 /**
- * in-memory-repository.cpp
+ * postgresql.cpp
  */
 
 #include <algorithm>
-#include "in-memory.hpp"
+#include "postgresql.hpp"
 
 template <typename T> bool sameName(const T &a, const T &b) {
 	return b.name == a.name;
@@ -17,19 +17,19 @@ template <typename T> bool addIfAbsents(std::vector<T> &vector, const T &val) {
 	return true;
 }
 
-bool InMemoryRepository::addTruck(const Truck &truck) {
+bool PostgresqlRepository::addTruck(const Truck &truck) {
 	return addIfAbsents(trucks, truck);
 }
 
-bool InMemoryRepository::addShipment(const Shipment &shipment) {
+bool PostgresqlRepository::addShipment(const Shipment &shipment) {
 	return addIfAbsents(shipments, shipment);
 }
 
-void InMemoryRepository::addAssignment(const Assignment &assignment) {
+void PostgresqlRepository::addAssignment(const Assignment &assignment) {
 	assignments.push_back(assignment);
 }
 
-std::optional<Truck> InMemoryRepository::getLightestTruckForWeight(const double weight) {
+std::optional<Truck> PostgresqlRepository::getLightestTruckForWeight(const double weight) {
 	std::optional<Truck> result;
 	
 	for (const auto &truck : trucks) {
@@ -46,7 +46,7 @@ std::optional<Truck> InMemoryRepository::getLightestTruckForWeight(const double 
 	return result;
 }
 
-std::optional<Shipment> InMemoryRepository::getHeaviestShipmentForCapacity(const double capacity) {
+std::optional<Shipment> PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity) {
 	std::optional<Shipment> result;
 	for (const auto &shipment : shipments) {
 		if (isBusy(shipment)) {
@@ -62,7 +62,7 @@ std::optional<Shipment> InMemoryRepository::getHeaviestShipmentForCapacity(const
 	return result;
 }
 
-bool InMemoryRepository::isBusy(const Truck &truck) {
+bool PostgresqlRepository::isBusy(const Truck &truck) {
 	for (const auto &assignment : assignments) {
 		if (assignment.truck.name == truck.name) {
 			return true;
@@ -71,7 +71,7 @@ bool InMemoryRepository::isBusy(const Truck &truck) {
 	return false;
 }
 
-bool InMemoryRepository::isBusy(const Shipment &shipment) {
+bool PostgresqlRepository::isBusy(const Shipment &shipment) {
 	for (const auto &assignment : assignments) {
 		if (assignment.shipment.name == shipment.name) {
 			return true;

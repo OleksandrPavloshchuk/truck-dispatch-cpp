@@ -11,6 +11,7 @@ project(${PROJECT_NAME}
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/config.cpp
     src/service.cpp
     src/controller/controller.cpp
     src/controller/add-shipment.cpp

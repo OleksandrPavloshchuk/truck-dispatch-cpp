@@ -2,37 +2,33 @@
  * main.cpp
  */
  
+#include <memory>
+#include <utility> 
 #include <string>
 #include <variant>
 #include <drogon/drogon.h>
 #include <drogon/orm/DbClient.h>
 
-#include "repository/in-memory.hpp"
+#include "config.hpp"
+#include "repository/postgresql.hpp"
 #include "service.hpp"
 #include "controller/add-shipment.hpp"
 #include "controller/add-truck.hpp"
 
-// Get required parameter from configuration:
-std::string getRequiredEnv(const char *name) {
-    const char *value = std::getenv(name);
-    if (value == nullptr || *value == '\0') {
-        throw std::runtime_error(
-            std::string("Required environment variable is not set: ") + name
-        );
-    }
-    return value;
+std::shared_ptr<drogon::orm::DbClient> createDatabaseClient(const Config &config) {
+	auto connectStr = "host=" + config.getDatabaseHost()
+		+ " port=" + config.getDatabasePort()
+		+ " dbname=" + config.getDatabase()
+		+ " user=" + config.getDatabaseUser()
+		+ " password=" + config.getDatabasePassword();
+	return drogon::orm::DbClient::newPgClient(connectStr, 2);	
 }
 
 // Entry point:
 int main() {
 
-	auto connectStr = "host=" + getRequiredEnv("DB_HOST")
-		+ " port=" + getRequiredEnv("DB_PORT")
-		+ " dbname=" + getRequiredEnv("DB_DATABASE")
-		+ " user=" + getRequiredEnv("DB_USER")
-		+ " password=" + getRequiredEnv("DB_PASSWORD");
-		
-	auto dbClient = drogon::orm::DbClient::newPgClient(connectStr, 2);
+    	Config config;
+	auto dbClient = createDatabaseClient(config);
 		
 	dbClient->execSqlAsync(
         	"SELECT current_database(), current_user",
@@ -54,17 +50,15 @@ int main() {
     	        	}
     	    	}
     	);
-
-	const int port = std::stoi(getRequiredEnv("HTTP_PORT"));
-	
-	InMemoryRepository repository;
+    	
+	PostgresqlRepository repository(dbClient);
 	Service service(repository);
 
 	AddShipmentController addShipmentController(service);
 	AddTruckController addTruckController(service);
 	
 	drogon::app()
-		.addListener("0.0.0.0", port)
+		.addListener("0.0.0.0", config.getHttpPort())
 		.registerHandler("/td/shipment", 
 			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {
 				addShipmentController.handle(req, std::move(callback));		
