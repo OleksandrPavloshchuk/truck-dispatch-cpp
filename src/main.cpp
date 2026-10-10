@@ -34,7 +34,7 @@ int main() {
 		
 	auto dbClient = drogon::orm::DbClient::newPgClient(connectStr, 2);
 		
-	db->execSqlAsync(
+	dbClient->execSqlAsync(
         	"SELECT current_database(), current_user",
        	 	[](const drogon::orm::Result& result) {
             	for (const auto& row : result) {
@@ -54,9 +54,6 @@ int main() {
     	        	}
     	    	}
     	);
-    
-	return 0;
-/*
 
 	const int port = std::stoi(getRequiredEnv("HTTP_PORT"));
 	
@@ -81,5 +78,4 @@ int main() {
 		.run();
 
 	return 0;
-	*/	
 }
