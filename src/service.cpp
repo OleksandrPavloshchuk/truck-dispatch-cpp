@@ -9,6 +9,10 @@ std::variant<
 	ShipmentDuplicateOutputEvent, 
 	AssignmentCreatedOutputEvent
 > Service::onShipmentArrived(const ShipmentArrivedInputEvent &in) {
+	const Shipment &shipment = in.shipment;
+	return ShipmentWaitsOutputEvent(shipment);	
+
+/*
 	
 	const Shipment &shipment = in.shipment;
 	if (!repository.addShipment(shipment)) {
@@ -23,6 +27,7 @@ std::variant<
 	} else {
 		return ShipmentWaitsOutputEvent(shipment);	
 	}
+*/	
 }
 
 std::variant<
@@ -32,6 +37,8 @@ std::variant<
 > Service::onTruckArrived(const TruckArrivedInputEvent &in) {
 	
 	const Truck &truck = in.truck;
+		return TruckWaitsOutputEvent(truck);	
+	/*
 	if (!repository.addTruck(truck)) {
 		return TruckDuplicateOutputEvent(truck);
 	}
@@ -44,5 +51,6 @@ std::variant<
 	} else {
 		return TruckWaitsOutputEvent(truck);	
 	}
+	*/
 }			
 

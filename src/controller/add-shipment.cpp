@@ -12,11 +12,13 @@ bool AddShipmentController::validate(const Json::Value &json) {
 }
 
 void AddShipmentController::doHandle(const Json::Value &src, Callback &callback) {
+/*
 	const Shipment shipment(src["name"].asString(), src["weight"].asDouble());
 	std::visit(
 		EventHandler{callback, *this},
 		service.onShipmentArrived(shipment)
 	);
+*/	
 }
 
 Json::Value AddShipmentController::toJson(const ShipmentWaitsOutputEvent &event) {

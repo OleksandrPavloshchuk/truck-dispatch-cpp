@@ -2,81 +2,24 @@
  * postgresql.cpp
  */
 
-#include <algorithm>
+#include <iostream>
 #include "postgresql.hpp"
 
-template <typename T> bool sameName(const T &a, const T &b) {
-	return b.name == a.name;
+void PostgresqlRepository::addTruck(const Truck &truck, OnSuccessAdd &onSuccessAdd, OnError &onError) {
+	// TODO	
 }
 
-template <typename T> bool addIfAbsents(std::vector<T> &vector, const T &val) {
-	if (std::ranges::any_of(vector, [&val](const auto& existing) { return sameName(val, existing); })) {
-		return false;
-	}
-	vector.push_back(val);
-	return true;
-}
-
-bool PostgresqlRepository::addTruck(const Truck &truck) {
-	return addIfAbsents(trucks, truck);
-}
-
-bool PostgresqlRepository::addShipment(const Shipment &shipment) {
-	return addIfAbsents(shipments, shipment);
-}
-
-void PostgresqlRepository::addAssignment(const Assignment &assignment) {
-	assignments.push_back(assignment);
-}
-
-std::optional<Truck> PostgresqlRepository::getLightestTruckForWeight(const double weight) {
-	std::optional<Truck> result;
-	
-	for (const auto &truck : trucks) {
-		if (isBusy(truck)) {
-			continue;
-		}
-		if (truck.capacity < weight) {
-			continue;
-		}
-		if (!result || truck.capacity < result->capacity) {
-			result.emplace(truck);
-		}
-	} 
-	return result;
-}
-
-std::optional<Shipment> PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity) {
-	std::optional<Shipment> result;
-	for (const auto &shipment : shipments) {
-		if (isBusy(shipment)) {
-			continue;
-		}
-		if (shipment.weight > capacity) {
-			continue;
-		}
-		if (!result || shipment.weight > result->weight) {
-			result.emplace(shipment);
-		}
-	} 
-	return result;
-}
-
-bool PostgresqlRepository::isBusy(const Truck &truck) {
-	for (const auto &assignment : assignments) {
-		if (assignment.truck.name == truck.name) {
-			return true;
-		}
-	}
-	return false;
-}
-
-bool PostgresqlRepository::isBusy(const Shipment &shipment) {
-	for (const auto &assignment : assignments) {
-		if (assignment.shipment.name == shipment.name) {
-			return true;
-		}
-	}
-	return false;
-}
-
+/*
+dbClient_->execSqlAsync(
+    "UPDATE trucks SET status = $1 WHERE id = $2",
+    [](const drogon::orm::Result& result) {
+        // Запит виконано успішно
+        const auto affectedRows = result.affectedRows();
+    },
+    [](const drogon::orm::DrogonDbException& error) {
+        // Помилка виконання SQL
+    },
+    "available",
+    truckId
+);
+*/
