@@ -8,13 +8,14 @@
 #include <functional>
 #include "../domain.hpp"
 
-using OnSuccessAdd = std::function<void(bool)>;
+using OnSuccessAdd = std::function<void()>;
 using OnError = std::function<void(const std::string&)>;
 
 
 class Repository {
 public:
-	virtual void addTruck(const Truck &truck, OnSuccessAdd &onSuccessAdd, OnError &onError) = 0;
+	virtual ~Repository() = default;
+	virtual void addTruck(const Truck &truck, OnSuccessAdd onSuccessAdd, OnError onError) = 0;
 /*
 	virtual bool addTruck(const Truck &truck) = 0;
 	virtual bool addShipment(const Shipment &shipment) = 0;
