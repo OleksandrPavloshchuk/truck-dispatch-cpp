@@ -23,7 +23,7 @@ private:
 		void operator()(const ShipmentDuplicateOutputEvent &event) const;
 		void operator()(const AssignmentCreatedOutputEvent &event) const;
 		
-		Callback &callback;
+		const Callback &callback;
 		AddShipmentController &controller;
 	};
 };

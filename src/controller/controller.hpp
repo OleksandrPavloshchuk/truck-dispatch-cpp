@@ -25,6 +25,9 @@ protected:
 	Json::Value toJson(const Shipment &shipment);
 	Json::Value toJson(const AssignmentCreatedOutputEvent &event);
 	
+	// TODO create more sophisticated processing
+	void internalError(const std::string &error, const Callback &callback);	
+	
 	Service &service;
 	
 private:

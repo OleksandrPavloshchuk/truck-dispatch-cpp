@@ -30,6 +30,14 @@ void Controller::invalidInput(Callback &callback) {
         callback(response);
 }
 
+void Controller::internalError(const std::string &error, const Callback &callback) {
+	Json::Value body(Json::objectValue);
+    	body["error"] = error;
+	auto response = drogon::HttpResponse::newHttpJsonResponse(body);
+        response->setStatusCode(drogon::k500InternalServerError);
+        callback(response);
+}
+
 Json::Value Controller::toJson(const Assignment &assignment) {
 	Json::Value result;
 	result["truck"] = toJson(assignment.truck);

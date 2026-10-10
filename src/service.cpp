@@ -1,56 +1,73 @@
 /**
  * service.cpp
  */
+#include <memory>
+#include <utility> 
 
 #include "service.hpp"
 
-std::variant<
-	ShipmentWaitsOutputEvent, 
-	ShipmentDuplicateOutputEvent, 
-	AssignmentCreatedOutputEvent
-> Service::onShipmentArrived(const ShipmentArrivedInputEvent &in) {
-	const Shipment &shipment = in.shipment;
-	return ShipmentWaitsOutputEvent(shipment);	
 
-/*
-	
+
+void Service::onShipmentArrived(
+		const ShipmentArrivedInputEvent &in, 
+		OnShipmentArrivedSuccess onShipmentArrivedSuccess,
+		OnError onError) {
+		
+	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
+	const auto successHandler = std::make_shared<OnShipmentArrivedSuccess>(std::move(onShipmentArrivedSuccess));
 	const Shipment &shipment = in.shipment;
-	if (!repository.addShipment(shipment)) {
-		return ShipmentDuplicateOutputEvent(shipment);		
-	}
-	
-	const std::optional<Truck> truckOpt = repository.getLightestTruckForWeight(shipment.weight);
-	if (truckOpt) {
-		const Assignment assignment(*truckOpt, shipment);
-		repository.addAssignment(assignment);
-		return AssignmentCreatedOutputEvent(assignment);
-	} else {
-		return ShipmentWaitsOutputEvent(shipment);	
-	}
-*/	
+
+	repository.addShipment(shipment, 
+		[this, shipment, successHandler, errorHandler]() {
+			repository.getLightestTruckForWeight(shipment.weight, 
+				[this, shipment, successHandler, errorHandler](std::optional<Truck> truck) {
+					if (truck) {
+						const Assignment assignment(*truck, shipment);
+						repository.addAssignment(assignment, 
+							[this, assignment, successHandler, errorHandler]() {
+								(*successHandler)(AssignmentCreatedOutputEvent(assignment));							
+							},
+							[errorHandler](const std::string &error) {(*errorHandler)(error);}
+						);
+					} else {
+						(*successHandler)(ShipmentWaitsOutputEvent(shipment));
+					}
+				},
+				[errorHandler](const std::string &error) {(*errorHandler)(error);}
+			);
+		},
+		[errorHandler](const std::string &error) {(*errorHandler)(error);}
+	);	
 }
 
-std::variant<
-	TruckWaitsOutputEvent, 
-	TruckDuplicateOutputEvent, 
-	AssignmentCreatedOutputEvent
-> Service::onTruckArrived(const TruckArrivedInputEvent &in) {
-	
-	const Truck &truck = in.truck;
-		return TruckWaitsOutputEvent(truck);	
-	/*
-	if (!repository.addTruck(truck)) {
-		return TruckDuplicateOutputEvent(truck);
-	}
-	
-	const std::optional<Shipment> shipmentOpt = repository.getHeaviestShipmentForCapacity(truck.capacity);
-	if (shipmentOpt) {
-		const Assignment assignment(truck, *shipmentOpt);
-		repository.addAssignment(assignment);
-		return AssignmentCreatedOutputEvent(assignment);
-	} else {
-		return TruckWaitsOutputEvent(truck);	
-	}
-	*/
-}			
+void Service::onTruckArrived(
+		const TruckArrivedInputEvent &in, 
+		OnTruckArrivedSuccess onTruckArrivedSuccess,
+		OnError onError) {
 
+	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
+	const auto successHandler = std::make_shared<OnTruckArrivedSuccess>(std::move(onTruckArrivedSuccess));
+	const Truck &truck = in.truck;
+
+	repository.addTruck(truck, 
+		[this, truck, successHandler, errorHandler]() {
+			repository.getHeaviestShipmentForCapacity(truck.capacity, 
+				[this, truck, successHandler, errorHandler](std::optional<Shipment> shipment) {
+					if (shipment) {
+						const Assignment assignment(truck, *shipment);
+						repository.addAssignment(assignment, 
+							[this, assignment, successHandler, errorHandler]() {
+								(*successHandler)(AssignmentCreatedOutputEvent(assignment));							
+							},
+							[errorHandler](const std::string &error) {(*errorHandler)(error);}
+						);
+					} else {
+						(*successHandler)(TruckWaitsOutputEvent(truck));
+					}
+				},
+				[errorHandler](const std::string &error) {(*errorHandler)(error);}
+			);
+		},
+		[errorHandler](const std::string &error) {(*errorHandler)(error);}
+	);	
+}

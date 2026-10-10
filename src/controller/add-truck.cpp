@@ -12,13 +12,15 @@ bool AddTruckController::validate(const Json::Value &json) {
 }
 
 void AddTruckController::doHandle(const Json::Value &src, Callback &callback) {
-/*
 	const Truck truck(src["name"].asString(), src["capacity"].asDouble());
-	std::visit(
-		EventHandler{callback, *this},
-		service.onTruckArrived(truck)
-	);
-*/	
+	service.onTruckArrived(truck,
+		[this, truck, callback](std::variant<TruckWaitsOutputEvent, AssignmentCreatedOutputEvent> result) {
+			std::visit(EventHandler{callback, *this}, result);			
+		},
+		[this, callback](const std::string &error) {
+			internalError(error, callback);
+		}
+	);	
 }
 
 Json::Value AddTruckController::toJson(const TruckWaitsOutputEvent &event) {

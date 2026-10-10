@@ -23,7 +23,7 @@ private:
 		void operator()(const TruckDuplicateOutputEvent &event) const;
 		void operator()(const AssignmentCreatedOutputEvent &event) const;
 		
-		Callback &callback;
+		const Callback &callback;
 		AddTruckController &controller;
 	};
 };
