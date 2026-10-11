@@ -6,8 +6,6 @@
 
 #include "service.hpp"
 
-
-
 void Service::onShipmentArrived(
 		const ShipmentArrivedInputEvent &in, 
 		OnShipmentArrivedSuccess onShipmentArrivedSuccess,
@@ -53,6 +51,7 @@ void Service::onTruckArrived(
 		[this, truck, successHandler, errorHandler]() {
 			repository.getHeaviestShipmentForCapacity(truck.capacity, 
 				[this, truck, successHandler, errorHandler](std::optional<Shipment> shipment) {
+					
 					if (shipment) {
 						const Assignment assignment(truck, *shipment);
 						repository.addAssignment(assignment, 

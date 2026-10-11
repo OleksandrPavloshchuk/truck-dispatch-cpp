@@ -6,6 +6,7 @@
 #include "postgresql.hpp"
 
 void PostgresqlRepository::addTruck(const Truck &truck, OnSuccessAdd onSuccessAdd, OnError onError) {
+
 	dbClient->execSqlAsync(
 		"INSERT INTO trucks(name, capacity) VALUES ($1, $2)",
 		[onSuccessAdd = std::move(onSuccessAdd)](const drogon::orm::Result&) {
@@ -18,7 +19,7 @@ void PostgresqlRepository::addTruck(const Truck &truck, OnSuccessAdd onSuccessAd
 		},
 		truck.name,
 		truck.capacity
-	);	
+	);
 }
 
 void PostgresqlRepository::addShipment(const Shipment &shipment, OnSuccessAdd onSuccessAdd, OnError onError) {

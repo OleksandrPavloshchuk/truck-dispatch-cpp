@@ -29,28 +29,7 @@ int main() {
 
     	Config config;
 	auto dbClient = createDatabaseClient(config);
-		
-	dbClient->execSqlAsync(
-        	"SELECT current_database(), current_user",
-       	 	[](const drogon::orm::Result& result) {
-            	for (const auto& row : result) {
-                	LOG_INFO << "Database: "
-                         	<< row[0].as<std::string>()
-                         	<< ", user: "
-                         	<< row[1].as<std::string>();
-    	        	}
-    	    	},
-    	    	[](const std::exception_ptr& e) {
-    	        	try {
-    	        	    if (e) {
-    	        	        std::rethrow_exception(e);
-    	        	    }
-    	        	} catch (const std::exception& ex) {
-                		LOG_ERROR << "Database query failed: " << ex.what();
-    	        	}
-    	    	}
-    	);
-    	
+	    	
 	PostgresqlRepository repository(dbClient);
 	Service service(repository);
 
@@ -60,7 +39,7 @@ int main() {
 	drogon::app()
 		.addListener("0.0.0.0", config.getHttpPort())
 		.registerHandler("/td/shipment", 
-			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {
+			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {			
 				addShipmentController.handle(req, std::move(callback));		
 			}
 		)

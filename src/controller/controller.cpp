@@ -1,20 +1,24 @@
 /**
  * controller.cpp
  */
- 
+
+
 #include "controller.hpp"
 
 void Controller::handle(const drogon::HttpRequestPtr& request, Callback &&callback) {
+
 	auto json = request->getJsonObject();
 	if (!json) {
 		invalidJson(callback);
 		return;
         }
+
 	const auto& body = *json;
 	if (!validate(body)) {
 		invalidInput(callback);
 		return;
 	}
+		
 	doHandle(body, callback); 
 }
 
@@ -30,11 +34,11 @@ void Controller::invalidInput(Callback &callback) {
         callback(response);
 }
 
-void Controller::internalError(const std::string &error, const Callback &callback) {
+void Controller::conflict(const std::string &error, const Callback &callback) {
 	Json::Value body(Json::objectValue);
     	body["error"] = error;
 	auto response = drogon::HttpResponse::newHttpJsonResponse(body);
-        response->setStatusCode(drogon::k500InternalServerError);
+        response->setStatusCode(drogon::k409Conflict);
         callback(response);
 }
 

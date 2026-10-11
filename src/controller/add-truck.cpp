@@ -18,7 +18,7 @@ void AddTruckController::doHandle(const Json::Value &src, Callback &callback) {
 			std::visit(EventHandler{callback, *this}, result);			
 		},
 		[this, callback](const std::string &error) {
-			internalError(error, callback);
+			conflict(error, callback);
 		}
 	);	
 }

@@ -23,3 +23,10 @@ find_package(Drogon REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
+
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Wshadow
+)
