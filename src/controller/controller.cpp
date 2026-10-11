@@ -44,28 +44,28 @@ void Controller::conflict(const std::string &error, const Callback &callback) {
 
 Json::Value Controller::toJson(const Assignment &assignment) {
 	Json::Value result;
-	result["truck"] = toJson(assignment.truck);
-	result["shipment"] = toJson(assignment.shipment);
+	result["truck"] = toJson(assignment.truck_);
+	result["shipment"] = toJson(assignment.shipment_);
 	return result;
 }
 
 Json::Value Controller::toJson(const Truck &truck) {
 	Json::Value result;
-        result["name"] = truck.name;
-        result["capacity"] = truck.capacity;
+        result["name"] = truck.name_;
+        result["capacity"] = truck.capacity_;
         return result;
 }
 
 Json::Value Controller::toJson(const Shipment &shipment) {
 	Json::Value result;
-        result["name"] = shipment.name;
-        result["weight"] = shipment.weight;
+        result["name"] = shipment.name_;
+        result["weight"] = shipment.weight_;
         return result;	
 }
 
 Json::Value Controller::toJson(const AssignmentCreatedOutputEvent &event) {
 	Json::Value result;
         result["type"] = "assignmentCreated";
-        result["assignment"] = toJson(event.assignment);
+        result["assignment"] = toJson(event.assignment_);
         return result;		
 }

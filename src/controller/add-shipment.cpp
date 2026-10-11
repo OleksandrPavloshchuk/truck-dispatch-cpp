@@ -13,7 +13,7 @@ bool AddShipmentController::validate(const Json::Value &json) {
 
 void AddShipmentController::doHandle(const Json::Value &src, Callback &callback) {
 	const Shipment shipment(src["name"].asString(), src["weight"].asDouble());
-	service.onShipmentArrived(shipment,
+	service_.onShipmentArrived(shipment,
 		[this, shipment, callback](std::variant<ShipmentWaitsOutputEvent, AssignmentCreatedOutputEvent> result) {
 			std::visit(EventHandler{callback, *this}, result);			
 		},
@@ -26,22 +26,11 @@ void AddShipmentController::doHandle(const Json::Value &src, Callback &callback)
 Json::Value AddShipmentController::toJson(const ShipmentWaitsOutputEvent &event) {
 	Json::Value result;	
         result["type"] = "shipmentWaits";
-        result["shipment"] = toJson(event.shipment);
-        return result;		
-}
-
-Json::Value AddShipmentController::toJson(const ShipmentDuplicateOutputEvent &event) {
-	Json::Value result;	
-        result["type"] = "shipmentDuplicate";
-        result["shipment"] = toJson(event.shipment);
+        result["shipment"] = toJson(event.shipment_);
         return result;		
 }
 
 void AddShipmentController::EventHandler::operator()(const ShipmentWaitsOutputEvent &event) const {
-	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
-}
-
-void AddShipmentController::EventHandler::operator()(const ShipmentDuplicateOutputEvent &event) const {
 	callback(drogon::HttpResponse::newHttpJsonResponse(controller.toJson(event)));
 }
 

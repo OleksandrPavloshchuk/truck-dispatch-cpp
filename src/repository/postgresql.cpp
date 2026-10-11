@@ -7,7 +7,7 @@
 
 void PostgresqlRepository::addTruck(const Truck &truck, OnSuccessAdd onSuccessAdd, OnError onError) {
 
-	dbClient->execSqlAsync(
+	dbClient_->execSqlAsync(
 		"INSERT INTO trucks(name, capacity) VALUES ($1, $2)",
 		[onSuccessAdd = std::move(onSuccessAdd)](const drogon::orm::Result&) {
 			onSuccessAdd();
@@ -17,13 +17,13 @@ void PostgresqlRepository::addTruck(const Truck &truck, OnSuccessAdd onSuccessAd
 			// TODO return more complex object
 			onError("Can't add truck");
 		},
-		truck.name,
-		truck.capacity
+		truck.name_,
+		truck.capacity_
 	);
 }
 
 void PostgresqlRepository::addShipment(const Shipment &shipment, OnSuccessAdd onSuccessAdd, OnError onError) {
-	dbClient->execSqlAsync(
+	dbClient_->execSqlAsync(
 		"INSERT INTO shipments(name, weight) VALUES ($1, $2)",
 		[onSuccessAdd = std::move(onSuccessAdd)](const drogon::orm::Result&) {
 			onSuccessAdd();
@@ -33,13 +33,13 @@ void PostgresqlRepository::addShipment(const Shipment &shipment, OnSuccessAdd on
 			// TODO return more complex object
 			onError("Can't add shipment");
 		},
-		shipment.name,
-		shipment.weight
+		shipment.name_,
+		shipment.weight_
 	);		
 }
 
 void PostgresqlRepository::addAssignment(const Assignment &assignment, OnSuccessAdd onSuccessAdd, OnError onError) {
-	dbClient->execSqlAsync(
+	dbClient_->execSqlAsync(
 		"INSERT INTO assignments(truck_name, shipment_name) VALUES ($1, $2)",
 		[onSuccessAdd = std::move(onSuccessAdd)](const drogon::orm::Result&) {
 			onSuccessAdd();
@@ -49,8 +49,8 @@ void PostgresqlRepository::addAssignment(const Assignment &assignment, OnSuccess
 			// TODO return more complex object
 			onError("Can't add assignment");
 		},
-		assignment.truck.name,
-		assignment.shipment.name
+		assignment.truck_.name_,
+		assignment.shipment_.name_
 	);			
 }
 
@@ -63,7 +63,7 @@ void PostgresqlRepository::getLightestTruckForWeight(const double weight, OnSucc
                 AND name NOT IN (SELECT truck_name FROM assignments))
                 LIMIT 1
         )";
-        dbClient->execSqlAsync(sql,
+        dbClient_->execSqlAsync(sql,
         	[onSuccessGetTruck = std::move(onSuccessGetTruck)](const drogon::orm::Result &result) {
         		for (const auto& row : result) {
         			const Truck truck(row[0].as<std::string>(), row[1].as<double>());
@@ -90,7 +90,7 @@ void PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity,
               	AND name NOT IN (SELECT shipment_name FROM assignments))
         	LIMIT 1
         )";
-        dbClient->execSqlAsync(sql,
+        dbClient_->execSqlAsync(sql,
         	[onSuccessGetShipment = std::move(onSuccessGetShipment)](const drogon::orm::Result &result) {
         		for (const auto& row : result) {
         			const Shipment shipment(row[0].as<std::string>(), row[1].as<double>());

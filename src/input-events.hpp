@@ -7,15 +7,15 @@
 #include "domain.hpp"
 
 struct TruckArrivedInputEvent {
-	const Truck truck;
+	const Truck truck_;
 		
 	TruckArrivedInputEvent(const Truck &truck) : 
-		truck(truck) {}
+		truck_(truck) {}
 };
 
 struct ShipmentArrivedInputEvent {
-	const Shipment shipment;
+	const Shipment shipment_;
 		
 	ShipmentArrivedInputEvent(const Shipment &shipment) : 
-		shipment(shipment) {}
+		shipment_(shipment) {}
 };

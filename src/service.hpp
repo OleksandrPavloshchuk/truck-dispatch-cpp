@@ -22,7 +22,7 @@ using OnTruckArrivedSuccess = std::function<void(std::variant<
 
 class Service {
 public:
-	Service(Repository &repository) : repository(repository) {}
+	Service(Repository &repository) : repository_(repository) {}
 	
 	void onShipmentArrived(
 		const ShipmentArrivedInputEvent &in, 
@@ -35,7 +35,7 @@ public:
 		OnError onError);
 			
 private:
-	Repository &repository;
+	Repository &repository_;
 };
 
 

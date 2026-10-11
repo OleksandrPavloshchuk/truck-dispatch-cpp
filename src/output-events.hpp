@@ -7,36 +7,22 @@
 #include "domain.hpp"
 
 struct TruckWaitsOutputEvent {
-	const Truck truck;
+	const Truck truck_;
 		
 	TruckWaitsOutputEvent(const Truck &truck) : 
-		truck(truck) {}
+		truck_(truck) {}
 };
 
 struct ShipmentWaitsOutputEvent {
-	const Shipment shipment;
+	const Shipment shipment_;
 		
 	ShipmentWaitsOutputEvent(const Shipment &shipment) : 
-		shipment(shipment) {}
-};
-
-struct TruckDuplicateOutputEvent {
-	const Truck truck;
-		
-	TruckDuplicateOutputEvent(const Truck &truck) : 
-		truck(truck) {}
-};
-
-struct ShipmentDuplicateOutputEvent {
-	const Shipment shipment;
-		
-	ShipmentDuplicateOutputEvent(const Shipment &shipment) : 
-		shipment(shipment) {}
+		shipment_(shipment) {}
 };
 
 struct AssignmentCreatedOutputEvent {
-	const Assignment assignment;
+	const Assignment assignment_;
 	
 	AssignmentCreatedOutputEvent(const Assignment &assignment) : 
-		assignment(assignment) {}
+		assignment_(assignment) {}
 };

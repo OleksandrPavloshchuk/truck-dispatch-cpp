@@ -7,37 +7,37 @@
 #include <string>
 
 struct Truck {
-	const std::string name;
-	const double capacity;
+	const std::string name_;
+	const double capacity_;
 	
 	Truck(
 		const std::string &name, 
 		const double capacity
 	): 
-		name(name), 
-		capacity(capacity) {}
+		name_(name), 
+		capacity_(capacity) {}
 };
 
 struct Shipment {
-	const std::string name;
-	const double weight;
+	const std::string name_;
+	const double weight_;
 	
 	Shipment(
 		const std::string &name, 
 		const double weight
 	): 
-		name(name), 
-		weight(weight) {}
+		name_(name), 
+		weight_(weight) {}
 };
 
 struct Assignment {
-	const Truck truck;
-	const Shipment shipment;
+	const Truck truck_;
+	const Shipment shipment_;
 	
 	Assignment(
 		const Truck &truck,
 		const Shipment &shipment
 	) :
-		 truck(truck),
-		 shipment(shipment) {}
+		 truck_(truck),
+		 shipment_(shipment) {}
 };

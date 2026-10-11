@@ -13,15 +13,15 @@ void Service::onShipmentArrived(
 		
 	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
 	const auto successHandler = std::make_shared<OnShipmentArrivedSuccess>(std::move(onShipmentArrivedSuccess));
-	const Shipment &shipment = in.shipment;
+	const Shipment &shipment = in.shipment_;
 
-	repository.addShipment(shipment, 
+	repository_.addShipment(shipment, 
 		[this, shipment, successHandler, errorHandler]() {
-			repository.getLightestTruckForWeight(shipment.weight, 
+			repository_.getLightestTruckForWeight(shipment.weight_, 
 				[this, shipment, successHandler, errorHandler](std::optional<Truck> truck) {
 					if (truck) {
 						const Assignment assignment(*truck, shipment);
-						repository.addAssignment(assignment, 
+						repository_.addAssignment(assignment, 
 							[this, assignment, successHandler, errorHandler]() {
 								(*successHandler)(AssignmentCreatedOutputEvent(assignment));							
 							},
@@ -45,16 +45,16 @@ void Service::onTruckArrived(
 
 	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
 	const auto successHandler = std::make_shared<OnTruckArrivedSuccess>(std::move(onTruckArrivedSuccess));
-	const Truck &truck = in.truck;
+	const Truck &truck = in.truck_;
 
-	repository.addTruck(truck, 
+	repository_.addTruck(truck, 
 		[this, truck, successHandler, errorHandler]() {
-			repository.getHeaviestShipmentForCapacity(truck.capacity, 
+			repository_.getHeaviestShipmentForCapacity(truck.capacity_, 
 				[this, truck, successHandler, errorHandler](std::optional<Shipment> shipment) {
 					
 					if (shipment) {
 						const Assignment assignment(truck, *shipment);
-						repository.addAssignment(assignment, 
+						repository_.addAssignment(assignment, 
 							[this, assignment, successHandler, errorHandler]() {
 								(*successHandler)(AssignmentCreatedOutputEvent(assignment));							
 							},

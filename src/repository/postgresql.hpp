@@ -11,7 +11,7 @@
 
 class PostgresqlRepository : public Repository {
 public:
-	PostgresqlRepository(std::shared_ptr<drogon::orm::DbClient> dbClient): dbClient(std::move(dbClient)) {}
+	PostgresqlRepository(std::shared_ptr<drogon::orm::DbClient> dbClient): dbClient_(std::move(dbClient)) {}
 	
 	void addTruck(const Truck &truck, OnSuccessAdd onSuccessAdd, OnError onError);
 	void addShipment(const Shipment &shipment, OnSuccessAdd onSuccessAdd, OnError onError);
@@ -20,6 +20,6 @@ public:
 	void getHeaviestShipmentForCapacity(const double capacity, OnSuccessGetShipment onSuccessGetShipment, OnError onError);
 	
 private:
-	std::shared_ptr<drogon::orm::DbClient> dbClient;
+	std::shared_ptr<drogon::orm::DbClient> dbClient_;
 	
 };
