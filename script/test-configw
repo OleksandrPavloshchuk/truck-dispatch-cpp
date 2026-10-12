@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+./cmakew -S .. -B ../build-test -G Ninja -DBUILD_TESTING=ON
+

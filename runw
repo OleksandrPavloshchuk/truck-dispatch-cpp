@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -x
-
-source "script/env.sh" dev
-
-./build/truck-dispatch
-
