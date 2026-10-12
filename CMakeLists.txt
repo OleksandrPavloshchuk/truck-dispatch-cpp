@@ -43,7 +43,9 @@ if(BUILD_TESTING)
 	find_package(Catch2 3 REQUIRED)
 	
 	add_executable(${TEST_NAME}
-		tests/service-test.cpp
+		tests/service/cant-add-shipment.cpp
+		tests/service/no-truck.cpp
+		src/service.cpp
 	)
 	
     	target_link_libraries(${TEST_NAME}
