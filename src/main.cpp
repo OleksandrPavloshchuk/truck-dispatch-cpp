@@ -37,6 +37,9 @@ int main() {
 	AddTruckController addTruckController(service);
 	
 	drogon::app()
+    		.setFloatPrecisionInJson(3, "decimal");	
+	
+	drogon::app()
 		.addListener("0.0.0.0", config.getHttpPort())
 		.registerHandler("/td/shipment", 
 			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {			
