@@ -2,29 +2,28 @@
  * cant-add-shipment.cpp
  */
 
-#include <iostream>
 #include <catch2/catch_test_macros.hpp>
 
 #include "../../src/service.hpp"
 #include "../mocks/repository.hpp"
 
-class TestRepository : public MockRepository {
+class CantAddShipmentTestRepository : public MockRepository {
 public:
 	void addShipment(const Shipment &shipment, OnSuccessAdd onSuccessAdd, OnError onError) override {
-		capture_.weight_ = shipment.weight_;
-		capture_.name_ = shipment.name_;
-		
+		captured_.weight_ = shipment.weight_;
+		captured_.name_ = shipment.name_;
+
 		onError("Something wrong");		
 	}
 	
 	struct {
 		std::string name_;
 		double weight_;
-	} capture_;
+	} captured_;
 };
 
 TEST_CASE("can't add shipment") {
-	TestRepository repository;
+	CantAddShipmentTestRepository repository;
 	Service service(repository);
 	ShipmentArrivedInputEvent in(Shipment("s1", 2.0));
 	
@@ -39,8 +38,8 @@ TEST_CASE("can't add shipment") {
 			actualError = error;
 		});
 	
-	REQUIRE(repository.capture_.name_ == "s1");
-	REQUIRE(repository.capture_.weight_ == 2);
+	REQUIRE(repository.captured_.name_ == "s1");
+	REQUIRE(repository.captured_.weight_ == 2);
 	REQUIRE_FALSE(successCalled);
 	REQUIRE(actualError == "Something wrong");
 }
