@@ -45,6 +45,7 @@ if(BUILD_TESTING)
 	add_executable(${TEST_NAME}
 		tests/service/cant-add-shipment.cpp
 		tests/service/no-truck.cpp
+		tests/service/truck-found.cpp
 		src/service.cpp
 	)
 	
