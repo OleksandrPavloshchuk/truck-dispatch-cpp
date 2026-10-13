@@ -46,19 +46,22 @@ TEST_CASE("truck found") {
 	std::string actualError;	
 	
 	service.onShipmentArrived(in, 
-		[&](std::variant<ShipmentWaitsOutputEvent, AssignmentCreatedOutputEvent> result) {
+		[&](auto result) {
 			successCalled = true;
 			REQUIRE(std::holds_alternative<AssignmentCreatedOutputEvent>(result));
 			const auto &event = std::get<AssignmentCreatedOutputEvent>(result);
-			const auto assignment = event.assignment_;
-			REQUIRE(assignment.truck_.name_ == repository.captured_.truckName_);
-			REQUIRE(assignment.truck_.capacity_ == repository.captured_.truckCapacity_);
-			REQUIRE(assignment.shipment_.name_ == repository.captured_.shipmentName_);
-			REQUIRE(assignment.shipment_.weight_ == repository.captured_.shipmentWeight_);
+			const auto &assignment = event.assignment_;
+			REQUIRE(assignment.truck_.name_ == "t1");
+			REQUIRE(assignment.truck_.capacity_ == 4.1);
+			REQUIRE(assignment.shipment_.name_ == "s3");
+			REQUIRE(assignment.shipment_.weight_ == 4);
+			REQUIRE(repository.captured_.truckName_ == "t1");
+			REQUIRE(repository.captured_.truckCapacity_ == 4.1);
+			REQUIRE(repository.captured_.shipmentName_ == "s3");
+			REQUIRE(repository.captured_.shipmentWeight_ == 4);
 		}, 
-		[&](const std::string &error) {
-			actualError = error;
-		});
+		[&](const auto &error) { actualError = error; }
+	);
 	
 	REQUIRE(successCalled);
 	REQUIRE(actualError == "");
