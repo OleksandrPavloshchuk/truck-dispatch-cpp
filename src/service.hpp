@@ -20,7 +20,21 @@ using OnTruckArrivedSuccess = std::function<void(std::variant<
 	AssignmentCreatedOutputEvent
 >)>;
 
-class Service {
+class IService {
+public:
+	virtual void onShipmentArrived(
+		const ShipmentArrivedInputEvent &in, 
+		OnShipmentArrivedSuccess onShipmentArrivedSuccess,
+		OnError onError) = 0;
+
+	virtual void onTruckArrived(
+		const TruckArrivedInputEvent &in, 
+		OnTruckArrivedSuccess onTruckArrivedSuccess,
+		OnError onError) = 0;
+			
+};
+
+class Service : public IService {
 public:
 	Service(Repository &repository) : repository_(repository) {}
 	

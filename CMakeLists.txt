@@ -46,11 +46,15 @@ if(BUILD_TESTING)
 		tests/service/cant-add-shipment.cpp
 		tests/service/no-truck.cpp
 		tests/service/truck-found.cpp
+		tests/controller/add-truck/truck-waits.cpp
 		src/service.cpp
+		src/controller/controller.cpp
+		src/controller/add-truck.cpp		
 	)
 	
     	target_link_libraries(${TEST_NAME}
         	PRIVATE Catch2::Catch2WithMain
+        	PRIVATE Drogon::Drogon
     	)	
 
 	target_compile_features(${TEST_NAME} PRIVATE cxx_std_23)
