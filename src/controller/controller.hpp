@@ -14,7 +14,7 @@ using Callback = std::function<void(const drogon::HttpResponsePtr&)>;
 
 class Controller {
 public:
-	Controller(Service &service) : service_(service) {}
+	Controller(IService &service) : service_(service) {}
 	void handle(const drogon::HttpRequestPtr& request, Callback &&callback);
 protected:
 	virtual bool validate(const Json::Value &json) = 0;
@@ -28,7 +28,7 @@ protected:
 	// TODO create more sophisticated processing
 	void conflict(const std::string &error, const Callback &callback);	
 	
-	Service &service_;
+	IService &service_;
 	
 private:
 	void invalidJson(Callback &callback);

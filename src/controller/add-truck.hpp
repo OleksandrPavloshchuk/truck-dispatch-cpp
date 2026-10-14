@@ -8,7 +8,7 @@
 
 class AddTruckController : public Controller {
 public:
-	AddTruckController(Service &service) : Controller(service) {}
+	AddTruckController(IService &service) : Controller(service) {}
 protected:
 	bool validate(const Json::Value &json);
 	void doHandle(const Json::Value &json, Callback &callback);

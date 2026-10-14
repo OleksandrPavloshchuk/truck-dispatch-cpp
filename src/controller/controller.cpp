@@ -2,18 +2,18 @@
  * controller.cpp
  */
 
-
 #include "controller.hpp"
 
 void Controller::handle(const drogon::HttpRequestPtr& request, Callback &&callback) {
 
 	auto json = request->getJsonObject();
+	
 	if (!json) {
 		invalidJson(callback);
 		return;
         }
 
-	const auto& body = *json;
+	const auto& body = *json;	
 	if (!validate(body)) {
 		invalidInput(callback);
 		return;
