@@ -9,7 +9,7 @@
 
 
 #include "../../mocks/service.hpp"
-#include "../../../src/controller/add-truck.hpp"
+#include "../../../../main/c++/controller/add-truck.hpp"
 
 class TruckWaitsTestService : public MockService {
 public:

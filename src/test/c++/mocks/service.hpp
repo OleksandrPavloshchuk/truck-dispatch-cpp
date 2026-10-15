@@ -4,7 +4,7 @@
  
 #pragma once 
  
-#include "../../src/service.hpp" 
+#include "../../../main/c++/service.hpp" 
 
 class MockService : public IService {
 public:	

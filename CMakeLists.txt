@@ -9,19 +9,22 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_BUILD_TYPE Release)
 
+set(SRC_MAIN "src/main/c++")
+set(SRC_TEST "src/test/c++")
+
 project(${PROJECT_NAME}
 	VERSION 1.0
     	LANGUAGES CXX
 )
 
 add_executable(${PROJECT_NAME}
-	src/main.cpp
-	src/config.cpp
-	src/service.cpp
-	src/controller/controller.cpp
-	src/controller/add-shipment.cpp
-	src/controller/add-truck.cpp
-	src/repository/postgresql.cpp
+	${SRC_MAIN}/main.cpp
+	${SRC_MAIN}/config.cpp
+	${SRC_MAIN}/service.cpp
+	${SRC_MAIN}/controller/controller.cpp
+	${SRC_MAIN}/controller/add-shipment.cpp
+	${SRC_MAIN}/controller/add-truck.cpp
+	${SRC_MAIN}/repository/postgresql.cpp
 )
 
 find_package(Drogon REQUIRED)
@@ -43,13 +46,13 @@ if(BUILD_TESTING)
 	find_package(Catch2 3 REQUIRED)
 	
 	add_executable(${TEST_NAME}
-		tests/service/cant-add-shipment.cpp
-		tests/service/no-truck.cpp
-		tests/service/truck-found.cpp
-		tests/controller/add-truck/truck-waits.cpp
-		src/service.cpp
-		src/controller/controller.cpp
-		src/controller/add-truck.cpp		
+		${SRC_TEST}/service/cant-add-shipment.cpp
+		${SRC_TEST}/service/no-truck.cpp
+		${SRC_TEST}/service/truck-found.cpp
+		${SRC_TEST}/controller/add-truck/truck-waits.cpp
+		${SRC_MAIN}/service.cpp
+		${SRC_MAIN}/controller/controller.cpp
+		${SRC_MAIN}/controller/add-truck.cpp		
 	)
 	
     	target_link_libraries(${TEST_NAME}

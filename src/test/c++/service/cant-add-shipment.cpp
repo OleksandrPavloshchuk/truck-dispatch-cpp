@@ -4,7 +4,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include "../../src/service.hpp"
+#include "../../../main/c++/service.hpp"
 #include "../mocks/repository.hpp"
 
 class CantAddShipmentTestRepository : public MockRepository {
