@@ -10,4 +10,4 @@ curl -v \
   -X POST \
   -H "Content-Type: application/json" \
   -d "$JSON" \
-  "http://localhost:$HTTP_PORT/td/truck"
+  "https://localhost:$HTTP_PORT/td/truck"

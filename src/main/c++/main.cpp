@@ -40,7 +40,13 @@ int main() {
     		.setFloatPrecisionInJson(3, "decimal");	
 	
 	drogon::app()
-		.addListener("0.0.0.0", config.getHttpPort())
+		.addListener(
+			"0.0.0.0", 
+			config.getHttpPort(),
+			true,
+			config.getSslCetrificatePath(),
+			config.getSslKeyPath()
+		)
 		.registerHandler("/td/shipment", 
 			[&addShipmentController](const drogon::HttpRequestPtr& req, Callback &&callback) {			
 				addShipmentController.handle(req, std::move(callback));		

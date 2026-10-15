@@ -26,6 +26,12 @@ public:
 	inline std::string getDatabasePassword() const {
 		return getRequiredEnv("DB_PASSWORD");
 	}
+	inline std::string getSslKeyPath() const {
+		return getRequiredEnv("SSL_KEY_PATH");
+	}
+	inline std::string getSslCetrificatePath() const {
+		return getRequiredEnv("SSL_CERT_PATH");
+	}
 	
 private:
 	static std::string getRequiredEnv(const char *name);

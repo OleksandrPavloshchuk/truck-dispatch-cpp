@@ -75,5 +75,7 @@ docker compose --env-file .env.dev -f docker/compose.yaml down -v
 | `POSTGRES_USER`     | Initial PostgreSQL administrator role                  |
 | `POSTGRES_PASSWORD` | Initial administrator password                         |
 | `POSTGRES_DB`       | Database created during first initialization           |
+| `SSL_KEY_PATH`      | Path to pem-file with key                              |
+| `SSL_CERT_PATH`     | Path to pem-file with certificate                      |
 
 `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB` are used by the PostgreSQL image when initializing an empty data directory. Changing these values does not automatically modify roles, passwords, or databases in an existing PostgreSQL volume.
