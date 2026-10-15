@@ -31,18 +31,14 @@ TEST_CASE("truck arrived and waits") {
     		"capacity": 12.2
     	})");
 
-    	drogon::HttpResponsePtr response;    	
-
     	controller.handle(
         	request,
-        	[&response](const drogon::HttpResponsePtr& result) {
-            		response = result;
+        	[&](const drogon::HttpResponsePtr& response) {
+		    	REQUIRE(response != nullptr);
+		    	REQUIRE(response->statusCode() == drogon::k200OK);
+		    	REQUIRE(response->getBody() == "{\"truck\":{\"capacity\":12.199999999999999,\"name\":\"t-one\"},\"type\":\"truckWaits\"}");
         	}
         );
-
-    	REQUIRE(response != nullptr);
-    	REQUIRE(response->statusCode() == drogon::k200OK);
-    	REQUIRE(response->getBody() == "{\"truck\":{\"capacity\":12.199999999999999,\"name\":\"t-one\"},\"type\":\"truckWaits\"}");
 
 }
 
