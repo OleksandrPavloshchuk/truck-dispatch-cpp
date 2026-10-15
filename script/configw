@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-./cmakew -S .. -B ../build -G Ninja
+./cmakew -S .. -B ../build -G Ninja "$@"
 
