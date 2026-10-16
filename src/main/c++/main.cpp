@@ -2,6 +2,7 @@
  * main.cpp
  */
  
+#include <iostream>
 #include <memory>
 #include <utility> 
 #include <string>
@@ -36,10 +37,11 @@ int main() {
 	AddShipmentController addShipmentController(service);
 	AddTruckController addTruckController(service);
 	
-	drogon::app()
-    		.setFloatPrecisionInJson(3, "decimal");	
+	auto &app = drogon::app();
 	
-	drogon::app()
+	app.setFloatPrecisionInJson(3, "decimal");	
+	
+	app
 		.addListener(
 			"0.0.0.0", 
 			config.getHttpPort(),
@@ -56,8 +58,14 @@ int main() {
 			[&addTruckController](const drogon::HttpRequestPtr& req, Callback &&callback) {
 				addTruckController.handle(req, std::move(callback));
 			}
-		)
-		.run();
+		);
+	
+	std::cout << "Truck Dispatch application is started and accept requests on port " << config.getHttpPort() << std::endl;
+	
+		
+	app.run();
 
+	std::cout << "Truck Dispatch application shutdown" << std::endl;
+	
 	return 0;
 }

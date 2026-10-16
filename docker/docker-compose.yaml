@@ -1,16 +1,42 @@
+
 services:
   db:
     image: postgres:16
-    container_name: postgres-cpp-td
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
     ports:
-      - "${POSTGRES_PORT:-15432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-15432}:5432"
     volumes:
       - cpp_td_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  api:
+    image: truck-dispatch:dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${HTTP_PORT:-3080}:3080"
+    environment:
+      HTTP_PORT: "3080"
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_DATABASE: ${DB_DATABASE:?DB_DATABASE is required}
+      DB_USER: ${DB_USER:?DB_USER is required}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      SSL_KEY_PATH: /run/certs/localhost-key.pem
+      SSL_CERT_PATH: /run/certs/localhost.pem
+    volumes:
+      - ${HOME}/personal/cert:/run/certs:ro            
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   cpp_td_data:

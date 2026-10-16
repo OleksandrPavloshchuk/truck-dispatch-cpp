@@ -3,5 +3,5 @@ build-test/
 uploads/
 .env.*
 !.env.example
-docker-build/drogon
-docker-build/truck-dispatch
+docker/drogon
+docker/truck-dispatch
