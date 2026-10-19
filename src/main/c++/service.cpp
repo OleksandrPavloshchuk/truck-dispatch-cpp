@@ -70,3 +70,17 @@ void Service::onTruckArrived(
 		[errorHandler](const std::string &error) {(*errorHandler)(error);}
 	);	
 }
+
+void Service::getShipmentsTotal(
+		OnSuccessGetTotal onSuccessGetTotal,
+		OnError onError) {
+		
+	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
+	const auto successHandler = std::make_shared<OnSuccessGetTotal>(std::move(onSuccessGetTotal));
+	
+	repository_.getShipmentsTotal(
+		[successHandler](long count) {(*successHandler)(count);},
+		[errorHandler](const std::string &error) {(*errorHandler)(error);}		
+	);
+	
+}

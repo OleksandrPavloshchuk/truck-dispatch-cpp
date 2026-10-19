@@ -17,5 +17,9 @@ public:
 		const TruckArrivedInputEvent &in, 
 		OnTruckArrivedSuccess onTruckArrivedSuccess,
 		OnError onError) {}
+		
+	void getShipmentsTotal(
+		OnSuccessGetTotal onSuccessGetTotal,
+		OnError onError) {}
 			
 };

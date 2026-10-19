@@ -108,3 +108,24 @@ void PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity,
 	);	
 }
 
+void PostgresqlRepository::getShipmentsTotal(OnSuccessGetTotal onSuccessGetTotal, OnError onError) {
+	const std::string sql = R"(
+        	SELECT count(*) FROM shipments
+        )";
+        dbClient_->execSqlAsync(sql,
+        	[onSuccessGetTotal = std::move(onSuccessGetTotal)](const drogon::orm::Result &result) {
+        		for (const auto& row : result) {
+        			const long count = row[0].as<long>();
+        			onSuccessGetTotal(count);
+        			return;
+        		}
+        		onSuccessGetTotal(0);
+        	},
+		[onError = std::move(onError)](const drogon::orm::DrogonDbException&) {
+			LOG_ERROR << "Can't get shipment count";
+			// TODO return more complex object
+			onError("Can't get shipment count");
+		}
+	);		
+}
+
