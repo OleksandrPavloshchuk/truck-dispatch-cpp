@@ -1,0 +1,15 @@
+
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+#set -x
+
+ENV_FILE=$(dirname "$0")/env.sh
+source "$ENV_FILE" dev
+COMPOSE_FILE=$(dirname "$0")/../docker/postgresql-only.yaml
+
+docker compose \
+    --env-file "$ENV_FILE" \
+    -f "$COMPOSE_FILE" \
+    up

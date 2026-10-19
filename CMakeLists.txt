@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME}
 	${SRC_MAIN}/controller/controller.cpp
 	${SRC_MAIN}/controller/add-shipment.cpp
 	${SRC_MAIN}/controller/add-truck.cpp
+	${SRC_MAIN}/controller/metrics.cpp
 	${SRC_MAIN}/repository/postgresql.cpp
 )
 

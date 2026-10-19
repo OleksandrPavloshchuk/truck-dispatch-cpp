@@ -15,6 +15,7 @@
 #include "service.hpp"
 #include "controller/add-shipment.hpp"
 #include "controller/add-truck.hpp"
+#include "controller/metrics.hpp"
 
 std::shared_ptr<drogon::orm::DbClient> createDatabaseClient(const Config &config) {
 	auto connectStr = "host=" + config.getDatabaseHost()
@@ -36,6 +37,7 @@ int main() {
 
 	AddShipmentController addShipmentController(service);
 	AddTruckController addTruckController(service);
+	MetricsController metricsController(service);
 	
 	auto &app = drogon::app();
 	
@@ -57,6 +59,11 @@ int main() {
 		.registerHandler("/td/truck", 
 			[&addTruckController](const drogon::HttpRequestPtr& req, Callback &&callback) {
 				addTruckController.handle(req, std::move(callback));
+			}
+		)
+		.registerHandler("/metrics", 
+			[&metricsController](const drogon::HttpRequestPtr&, Callback &&callback) {
+				metricsController.handle(std::move(callback));
 			}
 		);
 	
