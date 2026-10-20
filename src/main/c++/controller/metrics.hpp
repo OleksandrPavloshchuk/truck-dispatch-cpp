@@ -20,5 +20,5 @@ private:
 	IService &service_;
 	
 	void databaseError(const std::string &error, Callback &callback);
-	void success(long shipmentsTotal, Callback &callback);
+	void success(const DatabaseMetrics &metrics, Callback &callback);
 };

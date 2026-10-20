@@ -3,7 +3,7 @@
  */
  
 #include "metrics.hpp"
-
+ 
 const std::string TEMPLATE = R"(
 # HELP td_shipments_created_total Total created shipments.
 # TYPE td_shipments_created_total counter
@@ -14,6 +14,8 @@ std::string getDatabaseMetrics(const DatabaseMetrics &metrics) {
 }
 
 void MetricsController::handle(Callback &&callback) {
+
+	LOG_DEBUG << "MetricsController::handle";
 
 	service_.getDatabaseMetrics(
 		[this, callback](const DatabaseMetrics &metrics) mutable {
@@ -30,7 +32,7 @@ void MetricsController::success(const DatabaseMetrics &metrics, Callback &callba
 	auto response = drogon::HttpResponse::newHttpResponse();
 	response->setStatusCode(drogon::k200OK);
 	response->setContentTypeCode(drogon::CT_TEXT_PLAIN);
-	response->setBody(getDatabaseMetrics(matrics));
+	response->setBody(getDatabaseMetrics(metrics));
 	callback(response);	
 }
 

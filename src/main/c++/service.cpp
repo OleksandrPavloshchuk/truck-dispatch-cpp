@@ -78,13 +78,10 @@ void Service::getDatabaseMetrics(
 	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
 	const auto successHandler = std::make_shared<OnSuccessGetDatabaseMetrics>(std::move(onSuccessGetDatabaseMetrics));
 	
-	// TODO		
-	/*
-	repository_.getShipmentsTotal(
-		[successHandler](long count) {(*successHandler)(count);},
+	repository_.getDatabaseMetrics(
+		[successHandler](const DatabaseMetrics &metrics) {(*successHandler)(metrics);},
 		[errorHandler](const std::string &error) {(*errorHandler)(error);}		
 	);
-	*/
 		
 }
 
