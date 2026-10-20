@@ -57,10 +57,8 @@ void PostgresqlRepository::addAssignment(const Assignment &assignment, OnSuccess
 void PostgresqlRepository::getLightestTruckForWeight(const double weight, OnSuccessGetTruck onSuccessGetTruck, OnError onError) {
 	const std::string sql = R"(
 	       	SELECT name, capacity FROM trucks
-        	WHERE capacity in (SELECT min(capacity)
-                FROM trucks
-                WHERE capacity >= $1
-                AND name NOT IN (SELECT truck_name FROM assignments))
+        	WHERE capacity in (SELECT min(capacity) FROM trucks WHERE capacity >= $1)
+                AND name NOT IN (SELECT truck_name FROM assignments)
                 LIMIT 1
         )";
         dbClient_->execSqlAsync(sql,
@@ -84,10 +82,8 @@ void PostgresqlRepository::getLightestTruckForWeight(const double weight, OnSucc
 void PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity, OnSuccessGetShipment onSuccessGetShipment, OnError onError) {
 	const std::string sql = R"(
         	SELECT name, weight FROM shipments
-        	WHERE weight in (SELECT max(weight)
-               	FROM shipments
-               	WHERE weight <= $1
-              	AND name NOT IN (SELECT shipment_name FROM assignments))
+        	WHERE weight in (SELECT max(weight) FROM shipments WHERE weight <= $1)
+               	AND name NOT IN (SELECT shipment_name FROM assignments)
         	LIMIT 1
         )";
         dbClient_->execSqlAsync(sql,
