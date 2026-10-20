@@ -3,14 +3,15 @@
  */
  
 #include "metrics.hpp"
- 
-const std::string TEMPLATE = R"(
-# HELP td_shipments_created_total Total created shipments.
-# TYPE td_shipments_created_total counter
-td_shipments_created_total )";
 
 std::string getDatabaseMetrics(const DatabaseMetrics &metrics) {
-	return TEMPLATE + std::to_string(metrics.shipmentsTotal_) + "\n";
+    std::ostringstream out;
+
+    out << "# HELP td_shipments_total Total shipments.\n"
+        << "# TYPE td_shipments_total gauge\n"
+        << "td_shipments_total " << metrics.shipmentsTotal_ << '\n';
+
+    return out.str();
 }
 
 void MetricsController::handle(Callback &&callback) {
@@ -43,26 +44,4 @@ void MetricsController::databaseError(const std::string &error, Callback &callba
 	response->setBody("Database error: " + error);
         callback(response);
 }
-
-/*
-# HELP td_shipments_created_total Total created shipments.
-# TYPE td_shipments_created_total counter
-td_shipments_created_total 42
-*/
-
-/*
-
-#include <sstream>
-
-std::string getMetrics(long total) {
-    std::ostringstream out;
-
-    out << "# HELP td_shipments_total Total shipments.\n"
-        << "# TYPE td_shipments_total gauge\n"
-        << "td_shipments_total " << total << '\n';
-
-    return out.str();
-}
-
-*/
 

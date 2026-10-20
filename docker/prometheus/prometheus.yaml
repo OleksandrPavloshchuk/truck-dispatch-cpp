@@ -4,6 +4,9 @@ global:
 
 scrape_configs:
   - job_name: truck-dispatch
+    scheme: https
     metrics_path: /metrics
+    tls_config:
+      ca_file: /etc/prometheus/certs/rootCA.pem
     static_configs:
       - targets: ['api:3080']
