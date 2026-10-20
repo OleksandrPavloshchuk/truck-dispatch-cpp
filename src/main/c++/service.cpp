@@ -71,16 +71,20 @@ void Service::onTruckArrived(
 	);	
 }
 
-void Service::getShipmentsTotal(
-		OnSuccessGetTotal onSuccessGetTotal,
+void Service::getDatabaseMetrics(
+		OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics,
 		OnError onError) {
-		
+
 	const auto errorHandler = std::make_shared<OnError>(std::move(onError));
-	const auto successHandler = std::make_shared<OnSuccessGetTotal>(std::move(onSuccessGetTotal));
+	const auto successHandler = std::make_shared<OnSuccessGetDatabaseMetrics>(std::move(onSuccessGetDatabaseMetrics));
 	
+	// TODO		
+	/*
 	repository_.getShipmentsTotal(
 		[successHandler](long count) {(*successHandler)(count);},
 		[errorHandler](const std::string &error) {(*errorHandler)(error);}		
 	);
-	
+	*/
+		
 }
+

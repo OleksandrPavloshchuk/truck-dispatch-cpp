@@ -108,24 +108,35 @@ void PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity,
 	);	
 }
 
-void PostgresqlRepository::getShipmentsTotal(OnSuccessGetTotal onSuccessGetTotal, OnError onError) {
+void PostgresqlRepository::getDatabaseMetrics(OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics, OnError onError) {
 	const std::string sql = R"(
-        	SELECT count(*) FROM shipments
+        	SELECT 
+		(SELECT count(*) FROM shipments) AS shipments_total
         )";
         dbClient_->execSqlAsync(sql,
-        	[onSuccessGetTotal = std::move(onSuccessGetTotal)](const drogon::orm::Result &result) {
+        	[onSuccessGetDatabaseMetrics = std::move(onSuccessGetDatabaseMetrics)](const drogon::orm::Result &result) {
         		for (const auto& row : result) {
-        			const long count = row[0].as<long>();
-        			onSuccessGetTotal(count);
+        			const DatabaseMetrics metrics(row[0].as<int64_t>());
+        			onSuccessGetDatabaseMetrics(metrics);
         			return;
         		}
-        		onSuccessGetTotal(0);
         	},
 		[onError = std::move(onError)](const drogon::orm::DrogonDbException&) {
-			LOG_ERROR << "Can't get shipment count";
+			LOG_ERROR << "Can't get database metrics";
 			// TODO return more complex object
-			onError("Can't get shipment count");
+			onError("Can't get database metrics");
 		}
 	);		
+	
+	
 }
+
+/*
+
+SELECT
+    (SELECT count(*) FROM shipments) AS shipments_total,
+    (SELECT count(*) FROM trucks) AS trucks_total;
+
+*/
+
 

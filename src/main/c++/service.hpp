@@ -19,7 +19,6 @@ using OnTruckArrivedSuccess = std::function<void(std::variant<
 	TruckWaitsOutputEvent, 
 	AssignmentCreatedOutputEvent
 >)>;
-using OnSuccessGetTotal = std::function<void(const long)>;
 
 class IService {
 public:
@@ -33,8 +32,8 @@ public:
 		OnTruckArrivedSuccess onTruckArrivedSuccess,
 		OnError onError) = 0;
 		
-	virtual void getShipmentsTotal(
-		OnSuccessGetTotal onSuccessGetTotal,
+	virtual void getDatabaseMetrics(
+		OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics,
 		OnError onError) = 0;
 			
 };
@@ -53,8 +52,8 @@ public:
 		OnTruckArrivedSuccess onTruckArrivedSuccess,
 		OnError onError);
 		
-	void getShipmentsTotal(
-		OnSuccessGetTotal onSuccessGetTotal,
+	void getDatabaseMetrics(
+		OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics,
 		OnError onError);
 		
 			

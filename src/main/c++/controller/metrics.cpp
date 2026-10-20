@@ -9,27 +9,28 @@ const std::string TEMPLATE = R"(
 # TYPE td_shipments_created_total counter
 td_shipments_created_total )";
 
-std::string getMetrics(long total) {
-	return TEMPLATE + std::to_string(total) + "\n";
+std::string getDatabaseMetrics(const DatabaseMetrics &metrics) {
+	return TEMPLATE + std::to_string(metrics.shipmentsTotal_) + "\n";
 }
 
 void MetricsController::handle(Callback &&callback) {
 
-	service_.getShipmentsTotal(
-		[this, callback](long shipmentsTotal) mutable {
-			success(shipmentsTotal, callback);
+	service_.getDatabaseMetrics(
+		[this, callback](const DatabaseMetrics &metrics) mutable {
+			success(metrics, callback);
 		},
 		[this, callback](const std::string &error) mutable {
 		    databaseError(error, callback);
 		}		
-	); 	
+	);
+	
 }
 
-void MetricsController::success(long shipmentsTotal, Callback &callback) {
+void MetricsController::success(const DatabaseMetrics &metrics, Callback &callback) {
 	auto response = drogon::HttpResponse::newHttpResponse();
 	response->setStatusCode(drogon::k200OK);
 	response->setContentTypeCode(drogon::CT_TEXT_PLAIN);
-	response->setBody( getMetrics(shipmentsTotal));
+	response->setBody(getDatabaseMetrics(matrics));
 	callback(response);	
 }
 

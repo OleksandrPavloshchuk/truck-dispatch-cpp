@@ -18,7 +18,7 @@ public:
 	void addAssignment(const Assignment &assignment, OnSuccessAdd onSuccessAdd, OnError onError);
 	void getLightestTruckForWeight(const double weight, OnSuccessGetTruck onSuccessGetTruck, OnError onError);
 	void getHeaviestShipmentForCapacity(const double capacity, OnSuccessGetShipment onSuccessGetShipment, OnError onError);
-	void getShipmentsTotal(OnSuccessGetTotal onSuccessGetTotal, OnError onError);
+	void getDatabaseMetrics(OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics, OnError onError);
 	
 private:
 	std::shared_ptr<drogon::orm::DbClient> dbClient_;

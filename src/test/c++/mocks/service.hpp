@@ -18,8 +18,8 @@ public:
 		OnTruckArrivedSuccess onTruckArrivedSuccess,
 		OnError onError) {}
 		
-	void getShipmentsTotal(
-		OnSuccessGetTotal onSuccessGetTotal,
+	void getDatabaseMetrics(
+		OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics,
 		OnError onError) {}
 			
 };
