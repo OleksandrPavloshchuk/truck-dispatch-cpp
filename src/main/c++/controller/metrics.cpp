@@ -7,17 +7,21 @@
 std::string getDatabaseMetrics(const DatabaseMetrics &metrics) {
     std::ostringstream out;
 
-    out << "# HELP td_shipments_total Total shipments.\n"
+    out 
+    	<< "# HELP td_shipments_total Total shipments.\n"
         << "# TYPE td_shipments_total gauge\n"
-        << "td_shipments_total " << metrics.shipmentsTotal_ << '\n';
+        << "td_shipments_total " << metrics.shipmentsTotal_ << '\n'
+    	<< "# HELP td_trucks_total Total trucks.\n"
+        << "# TYPE td_trucks_total gauge\n"
+        << "td_trucks_total " << metrics.trucksTotal_ << '\n'
+    	<< "# HELP td_assignments_total Total assignments.\n"
+        << "# TYPE td_assignments_total gauge\n"
+        << "td_assignments_total " << metrics.assignmentsTotal_ << '\n';
 
     return out.str();
 }
 
 void MetricsController::handle(Callback &&callback) {
-
-	LOG_DEBUG << "MetricsController::handle";
-
 	service_.getDatabaseMetrics(
 		[this, callback](const DatabaseMetrics &metrics) mutable {
 			success(metrics, callback);
@@ -25,8 +29,7 @@ void MetricsController::handle(Callback &&callback) {
 		[this, callback](const std::string &error) mutable {
 		    databaseError(error, callback);
 		}		
-	);
-	
+	);	
 }
 
 void MetricsController::success(const DatabaseMetrics &metrics, Callback &callback) {

@@ -15,8 +15,17 @@ using OnSuccessGetTruck = std::function<void(std::optional<Truck>)>;
 using OnSuccessGetShipment = std::function<void(std::optional<Shipment>)>;
 
 struct DatabaseMetrics {
-	DatabaseMetrics(std::int64_t shipmentsTotal): shipmentsTotal_(shipmentsTotal) {}
+	DatabaseMetrics(
+		std::int64_t shipmentsTotal,
+		std::int64_t trucksTotal,
+		std::int64_t assignmentsTotal): 
+			shipmentsTotal_(shipmentsTotal),
+			trucksTotal_(trucksTotal),
+			assignmentsTotal_(assignmentsTotal) {}
+			
 	const std::int64_t shipmentsTotal_;
+	const std::int64_t trucksTotal_;
+	const std::int64_t assignmentsTotal_;
 };
 
 using OnSuccessGetDatabaseMetrics = std::function<void(const DatabaseMetrics&)>;

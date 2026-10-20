@@ -111,12 +111,16 @@ void PostgresqlRepository::getHeaviestShipmentForCapacity(const double capacity,
 void PostgresqlRepository::getDatabaseMetrics(OnSuccessGetDatabaseMetrics onSuccessGetDatabaseMetrics, OnError onError) {
 	const std::string sql = R"(
         	SELECT 
-		(SELECT count(*) FROM shipments) AS shipments_total
+		(SELECT count(*) FROM shipments) AS shipments_total,
+		(SELECT count(*) FROM trucks) AS trucks_total,
+		(SELECT count(*) FROM assignments) AS assignments_total
         )";
         dbClient_->execSqlAsync(sql,
         	[onSuccessGetDatabaseMetrics = std::move(onSuccessGetDatabaseMetrics)](const drogon::orm::Result &result) {
         		for (const auto& row : result) {
-        			const DatabaseMetrics metrics(row[0].as<int64_t>());
+        			const DatabaseMetrics metrics(
+        				row[0].as<int64_t>(), row[1].as<int64_t>(), row[2].as<int64_t>()
+        			);
         			onSuccessGetDatabaseMetrics(metrics);
         			return;
         		}
